@@ -106,7 +106,7 @@ func (am *authManager) gitConfigArgs() (map[string]string, error) {
 		if err != nil {
 			return nil, err
 		}
-		args["credential.helper"] = fmt.Sprintf("!cat %s", credsPath)
+		args["credential.helper"] = fmt.Sprintf("store --file=%s", credsPath)
 	}
 
 	if am.cookies != "" {
