@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM concourse/buildroot:git
+FROM alpine:3.13
 
 WORKDIR /opt/resource
 
+RUN apk update
+RUN apk add git
 ADD build/gerrit-resource .
 RUN chmod +x gerrit-resource
 RUN ln -s gerrit-resource check
