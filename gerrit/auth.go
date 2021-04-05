@@ -102,11 +102,16 @@ func (am *authManager) gitConfigArgs() (map[string]string, error) {
 
 	if am.username != "" {
 		// See: https://www.kernel.org/pub/software/scm/git/docs/technical/api-credentials.html#_credential_helpers
-		credsPath, err := am.credsPath()
-		if err != nil {
-			return nil, err
-		}
-		args["credential.helper"] = fmt.Sprintf("!cat %s", credsPath)
+		// credsPath, err := am.credsPath()
+		// if err != nil {
+		// 	return nil, err
+		// }
+		// args["credential.helper"] = fmt.Sprintf("!cat %s", credsPath)
+
+		// [2021-04-05] - use credentials stored in .git/config.  This makes it arguably less secure, however,
+		// the sebsequent build steps have no simple way to know where the auth temp file storing the credits
+		// is supposed to be, and simple commands like `git ls-remote` used in create-build-info will fail.
+		args["credential.helper"] = fmt.Sprintf("!f() { sleep 1; echo \"username=%s\"; echo \"password=%s\"; }; f", am.username, am.password)
 	}
 
 	if am.cookies != "" {
