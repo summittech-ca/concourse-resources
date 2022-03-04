@@ -23,3 +23,6 @@ RUN chmod +x gerrit-resource
 RUN ln -s gerrit-resource check
 RUN ln -s gerrit-resource in
 RUN ln -s gerrit-resource out
+
+RUN mkdir /root/.ssh
+COPY ssh_config /root/.ssh/config
