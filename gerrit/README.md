@@ -38,6 +38,12 @@ resource_types:
 
 * `digest_auth`: If `true`, use HTTP Digest auth instead of Basic auth.
 
+* `username`: A username for HTTP Basic authentication to Gerrit.
+
+* `private_ssh_key`: SSH identity, used for ssh-based submodules
+
+* `private_ssh_key_user`: SSH user, used for ssh-based submodules
+
 ## Behavior
 
 ### `check`: Check for new revisions.

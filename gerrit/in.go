@@ -23,6 +23,7 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"golang.org/x/build/gerrit"
 
@@ -57,6 +58,39 @@ func in(req resource.InRequest) error {
 	if err != nil {
 		return err
 	}
+
+	if (src.PrivateKey != "") && (src.PrivateKeyUser != "") {
+		sshConfig, err := os.OpenFile("/root/.ssh/config", os.O_APPEND|os.O_WRONLY, 0600)
+		if err != nil {
+			return err
+		}
+		_, err = sshConfig.WriteString("  IdentityFile /root/.ssh/id\n")
+		if err != nil {
+			return err
+		}
+		_, err = sshConfig.WriteString(fmt.Sprintf("  User %s\n", src.PrivateKeyUser))
+		if err != nil {
+			return err
+		}
+		defer sshConfig.Close()
+
+		privKey, err := os.OpenFile("/root/.ssh/id", os.O_CREATE|os.O_WRONLY, 0600)
+		if err != nil {
+			return err
+		}
+
+		var privateKeyStr = strings.ReplaceAll(src.PrivateKey, "\\n", "\n")
+		_, err = privKey.WriteString(privateKeyStr)
+		if err != nil {
+			return err
+		}
+		if !strings.HasSuffix("\n", privateKeyStr) {
+			_, err = privKey.WriteString("\n")
+		}
+
+		defer privKey.Close()
+	}
+
 	dir := req.TargetDir()
 
 	authMan := newAuthManager(src)

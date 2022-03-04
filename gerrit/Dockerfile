@@ -16,15 +16,14 @@ FROM alpine:3.13
 
 WORKDIR /opt/resource
 
-RUN apk update
-RUN apk add git openssh-client
+RUN apk update --no-cache && apk add git openssh-client
 ADD build/gerrit-resource .
-RUN chmod +x gerrit-resource
-RUN ln -s gerrit-resource check
-RUN ln -s gerrit-resource in
-RUN ln -s gerrit-resource out
+RUN chmod +x gerrit-resource && \
+	ln -s gerrit-resource check && \
+	ln -s gerrit-resource in && \
+	ln -s gerrit-resource out
 
 RUN mkdir /root/.ssh
 COPY ssh_config /root/.ssh/config
-RUN chown root:root /root/.ssh/config
-RUN chmod 600 /root/.ssh/config
+RUN chown root:root /root/.ssh/config && \
+	chmod 600 /root/.ssh/config
