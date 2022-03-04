@@ -17,7 +17,7 @@ FROM alpine:3.13
 WORKDIR /opt/resource
 
 RUN apk update
-RUN apk add git
+RUN apk add git openssh-client
 ADD build/gerrit-resource .
 RUN chmod +x gerrit-resource
 RUN ln -s gerrit-resource check
