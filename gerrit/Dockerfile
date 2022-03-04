@@ -26,3 +26,5 @@ RUN ln -s gerrit-resource out
 
 RUN mkdir /root/.ssh
 COPY ssh_config /root/.ssh/config
+RUN chown root:root /root/.ssh/config
+RUN chmod 600 /root/.ssh/config
