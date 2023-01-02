@@ -253,9 +253,9 @@ func resolveFetchUrlRef(params inParams, rev *gerrit.RevisionInfo) (url, ref str
 
 func git(dir string, args ...string) error {
 	gitArgs := append([]string{"-C", dir}, args...)
-	log.Printf("git %v", gitArgs)
 	output, err := execGit(gitArgs...)
 	if err != nil {
+		log.Printf("git %v", gitArgs)
 		log.Printf("git output:\n%s", output)
 		err = fmt.Errorf("git failed: %v", err)
 	}
