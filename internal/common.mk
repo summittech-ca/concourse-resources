@@ -14,7 +14,7 @@
 
 TREE_NAME=$(shell git write-tree)
 DIRTY_MARK=-dirty-$(shell git rev-parse --short ${TREE_NAME})
-BUILD=$(shell git describe --always --dirty=${DIRTY_MARK})
+BUILD=$(shell git describe --tags --always --dirty=${DIRTY_MARK})
 
 IMAGE_NAME=us.gcr.io/concourse-resources/${NAME}
 IMAGE_TAG=${IMAGE_NAME}:${BUILD}
